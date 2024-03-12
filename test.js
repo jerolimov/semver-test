@@ -2,7 +2,7 @@ const assert = require('node:assert');
 const test = require('node:test');
 const semver = require('semver');
 
-const semverRange = '>=4.15.*'
+const semverRange = '>=4.15'
 
 // https://github.com/openshift/console/blob/master/frontend/packages/console-dynamic-plugin-sdk/src/runtime/plugin-dependencies.ts#L52
 const semverOptions = { includePrerelease: true };
@@ -27,8 +27,16 @@ test('that the range should support upcoming versions', (t) => {
 
 test('that the range should support nightly builds as well', (t) => {
   for (const version of [
-    '4.15.0-0', '4.15.0-0-nightly', '4.15.0-0-nightly-2024-03-11-180746',
-    '4.16.0-0', '4.16.0-0-nightly', '4.16.0-0-nightly-2024-03-11-180746'
+    '4.15.0-0',
+    '4.15.0-0-nightly',
+    '4.15.0-0-nightly-2024-03-11-180746',
+    '4.15.0-0.ci.test-2024-03-12-080237-ci-ln-r2584l2-latest',
+    '4.15.0-ec.3',
+    '4.16.0-0',
+    '4.16.0-0-nightly',
+    '4.16.0-0-nightly-2024-03-11-180746',
+    '4.16.0-0.ci.test-2024-03-12-080237-ci-ln-r2584l2-latest',
+    '4.16.0-ec.3',
   ]) {
     assert(
       semver.satisfies(version, semverRange, semverOptions),
@@ -39,7 +47,11 @@ test('that the range should support nightly builds as well', (t) => {
 
 test('that the range should not support old nightly builds', (t) => {
   for (const version of [
-    '4.14.0-0', '4.14.0-0-nightly', '4.14.0-0-nightly-2024-03-11-180746',
+    '4.14.0-0',
+    '4.14.0-0-nightly',
+    '4.14.0-0-nightly-2024-03-11-180746',
+    '4.14.0-0.ci.test-2024-03-12-080237-ci-ln-r2584l2-latest',
+    '4.14.0-ec.3',
   ]) {
     assert(
       !semver.satisfies(version, semverRange, semverOptions),
